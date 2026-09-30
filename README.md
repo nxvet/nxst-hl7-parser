@@ -197,6 +197,9 @@ the `exports` map to the built `dist/`, so a broken entry point fails the test s
    dist-tag), and attaches the tarball to a GitHub Release.
 
 A published version is never overwritten: if a release turns out to be wrong, publish a new version.
+If the tagged version is already on npm (for example, 1.0.0 was published by hand because trusted
+publishing can only be configured for a package that already exists), the workflow skips the
+publish step and still creates the GitHub Release, so re-running a partly failed release is safe.
 
 ## Versioning
 

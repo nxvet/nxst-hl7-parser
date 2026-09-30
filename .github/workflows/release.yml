@@ -38,8 +38,25 @@ jobs:
           npm install --prefix "$RUNNER_TEMP/smoke" "$PWD"/nxvet-nxst-hl7-parser-*.tgz
           cd "$RUNNER_TEMP/smoke"
           node -e "import('@nxvet/nxst-hl7-parser').then((m) => { const names = Object.keys(m).sort(); console.log(names.join('\n')); if (names.length === 0) process.exit(1) })"
+      # npm never lets a version be published twice. When this exact version is already on the
+      # registry (a first release published by hand before trusted publishing could be configured,
+      # or a re-run after a later step failed), skip the publish step so the GitHub Release is
+      # still created. The per-version endpoint is queried because it becomes visible before the
+      # full package document does.
+      - name: Check whether this version is already on npm
+        id: registry
+        run: |
+          NAME="$(node -p "require('./package.json').name")"
+          VERSION="${GITHUB_REF_NAME#v}"
+          if curl -fsS -o /dev/null "https://registry.npmjs.org/${NAME/\//%2f}/${VERSION}"; then
+            echo "published=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::${NAME}@${VERSION} is already on npm; skipping npm publish"
+          else
+            echo "published=false" >> "$GITHUB_OUTPUT"
+          fi
       # Prereleases (v1.2.3-rc.0 and the like) go to the rc dist-tag; releases go to latest.
       - name: Publish to npm
+        if: steps.registry.outputs.published != 'true'
         run: |
           case "${GITHUB_REF_NAME#v}" in
             *-*) npm publish --provenance --access public --tag rc ;;

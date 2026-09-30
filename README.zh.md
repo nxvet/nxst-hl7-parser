@@ -291,6 +291,9 @@ npm pack --dry-run    # 列出實際會發佈的檔案
    最後把 tarball 附在 GitHub Release 上。
 
 已發佈的版本不會被覆寫：發現某一版有問題，就發一個新版本。
+如果 tag 對應的版本已經在 npm 上（例如 1.0.0：trusted publishing 只能替已存在的套件設定，所以
+首發是手動發的），workflow 會跳過 publish 這一步、照樣建立 GitHub Release；因此發到一半失敗的
+release 也可以放心重跑。
 
 ## 版本規則
 
