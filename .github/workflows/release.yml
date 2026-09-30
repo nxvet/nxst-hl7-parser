@@ -19,8 +19,11 @@ jobs:
           node-version-file: .nvmrc
           registry-url: https://registry.npmjs.org
           cache: npm
+      # Pinned to the npm 11 line rather than `latest`: trusted publishing needs npm >= 11.5.1, and
+      # a new npm major can drop support for the Node version in .nvmrc (npm 12 requires Node
+      # ^22.22.2 and refuses to install on 22.18).
       - name: Update npm (trusted publishing needs >= 11.5.1)
-        run: npm install -g npm@latest
+        run: npm install -g npm@11
       # The tag must name exactly the version in package.json.
       - name: Guard tag/version
         run: |
