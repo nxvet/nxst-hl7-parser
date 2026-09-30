@@ -1,0 +1,59 @@
+{
+  "name": "@nxvet/nxst-hl7-parser",
+  "version": "1.0.0",
+  "description": "Instrument-agnostic HL7 v2.x and MLLP helpers for NxVet SyncTool device plugins: MLLP framing, segment/field/component access, and HL7 timestamps. Zero dependencies, zero I/O.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nxvet/nxst-hl7-parser.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nxvet/nxst-hl7-parser/issues"
+  },
+  "homepage": "https://github.com/nxvet/nxst-hl7-parser#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "sideEffects": false,
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "README.zh.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "prepack": "npm run build",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "pretest": "npm run build && npm run typecheck",
+    "test": "node --test 'test/**/*.test.ts'"
+  },
+  "devDependencies": {
+    "@types/node": "^26.4.0",
+    "typescript": "^5.9.3"
+  },
+  "keywords": [
+    "nxvet",
+    "synctool",
+    "hl7",
+    "hl7v2",
+    "mllp",
+    "parser",
+    "veterinary",
+    "laboratory"
+  ]
+}
